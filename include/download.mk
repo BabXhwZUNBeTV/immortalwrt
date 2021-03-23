@@ -27,7 +27,7 @@ define dl_method
 $(strip \
   $(if $(filter git,$(2)),$(call dl_method_git,$(1),$(2)),
     $(if $(2),$(2), \
-      $(if $(filter @OPENWRT @APACHE/% @GHCODELOAD/% @GHREPO/% @GITHUB/% @GNOME/% @GNU/% @KERNEL/% @SF/% @SAVANNAH/% ftp://% http://% https://% file://%,$(1)),default, \
+      $(if $(filter @OPENWRT @APACHE/% @GITHUB/% @GNOME/% @GNU/% @KERNEL/% @SF/% @SAVANNAH/% ftp://% http://% https://% file://%,$(1)),default, \
         $(if $(filter git://%,$(1)),$(call dl_method_git,$(1),$(2)), \
           $(if $(filter svn://%,$(1)),svn, \
             $(if $(filter cvs://%,$(1)),cvs, \
@@ -199,23 +199,19 @@ endef
 # Only intends to be called as a submethod from other DownloadMethod
 define DownloadMethod/rawgit
 	echo "Checking out files from the git repository..."; \
-	for eachurl in $(URL); \
-	do \
-		mkdir -p $(TMP_DIR)/dl && \
-		cd $(TMP_DIR)/dl && \
-		rm -rf $(SUBDIR) && \
-		[ \! -d $(SUBDIR) ] && \
-		git clone $(OPTS) $$$${eachurl} $(SUBDIR) && \
-		(cd $(SUBDIR) && git checkout $(VERSION) && \
-			git submodule update --init --recursive) && \
-		echo "Packing checkout..." && \
-		export TAR_TIMESTAMP=`cd $(SUBDIR) && git log -1 --format='@%ct'` && \
-		rm -rf $(SUBDIR)/.git && \
-		$(call dl_tar_pack,$(TMP_DIR)/dl/$(FILE),$(SUBDIR)) && \
-		mv $(TMP_DIR)/dl/$(FILE) $(DL_DIR)/ && \
-		rm -rf $(SUBDIR) && \
-		break; \
-	done;
+	mkdir -p $(TMP_DIR)/dl && \
+	cd $(TMP_DIR)/dl && \
+	rm -rf $(SUBDIR) && \
+	[ \! -d $(SUBDIR) ] && \
+	git clone $(OPTS) $(URL) $(SUBDIR) && \
+	(cd $(SUBDIR) && git checkout $(VERSION) && \
+	git submodule update --init --recursive) && \
+	echo "Packing checkout..." && \
+	export TAR_TIMESTAMP=`cd $(SUBDIR) && git log -1 --format='@%ct'` && \
+	rm -rf $(SUBDIR)/.git && \
+	$(call dl_tar_pack,$(TMP_DIR)/dl/$(FILE),$(SUBDIR)) && \
+	mv $(TMP_DIR)/dl/$(FILE) $(DL_DIR)/ && \
+	rm -rf $(SUBDIR);
 endef
 
 define DownloadMethod/bzr
