@@ -792,6 +792,7 @@ endef
 TARGET_DEVICES += motorola_mr2600
 
 define Device/mqmaker_witi
+  $(Device/uimage-lzma-loader)
   IMAGE_SIZE := 16064k
   DEVICE_VENDOR := MQmaker
   DEVICE_MODEL := WiTi
@@ -802,6 +803,7 @@ endef
 TARGET_DEVICES += mqmaker_witi
 
 define Device/mtc_wr1201
+  $(Device/uimage-lzma-loader)
   IMAGE_SIZE := 16000k
   DEVICE_VENDOR := MTC
   DEVICE_MODEL := Wireless Router WR1201
