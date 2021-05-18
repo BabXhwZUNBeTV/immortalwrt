@@ -122,6 +122,7 @@ define Device/alfa-network_quad-e4g
   DEVICE_MODEL := Quad-E4G
   DEVICE_PACKAGES := kmod-ata-ahci kmod-sdhci-mt7620 kmod-usb3 uboot-envtools \
 	-wpad-openssl
+  SUPPORTED_DEVICES += quad-e4g
 endef
 TARGET_DEVICES += alfa-network_quad-e4g
 
@@ -655,6 +656,23 @@ define Device/jcg_jhr-ac876m
   DEVICE_PACKAGES := kmod-mt7615e kmod-mt7615-firmware kmod-usb3 kmod-usb-ledtrig-usbport
 endef
 TARGET_DEVICES += jcg_jhr-ac876m
+
+define Device/jcg_q20
+  $(Device/uimage-lzma-loader)
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  UBINIZE_OPTS := -E 5
+  KERNEL_SIZE := 4096k
+  IMAGE_SIZE := 32768k
+  IMAGES += factory.bin
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  IMAGE/factory.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | \
+	check-size
+  DEVICE_VENDOR := JCG
+  DEVICE_MODEL := Q20
+  DEVICE_PACKAGES := kmod-mt7915e uboot-envtools
+endef
+TARGET_DEVICES += jcg_q20
 
 define Device/jcg_y2
   $(Device/uimage-lzma-loader)
