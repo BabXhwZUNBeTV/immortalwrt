@@ -234,6 +234,15 @@ define Device/cudy_wr1300
 endef
 TARGET_DEVICES += cudy_wr1300
 
+define Device/cudy_wr2100
+  DEVICE_VENDOR := Cudy
+  DEVICE_MODEL := WR2100
+  IMAGE_SIZE := 15872k
+  UIMAGE_NAME := R11
+  DEVICE_PACKAGES := kmod-mt7603 kmod-mt7615e kmod-mt7615-firmware
+endef
+TARGET_DEVICES += cudy_wr2100
+
 define Device/dlink_dir-8xx-a1
   IMAGE_SIZE := 16000k
   DEVICE_VENDOR := D-Link
@@ -658,12 +667,11 @@ endef
 TARGET_DEVICES += jcg_jhr-ac876m
 
 define Device/jcg_q20
-  $(Device/uimage-lzma-loader)
   BLOCKSIZE := 128k
   PAGESIZE := 2048
   UBINIZE_OPTS := -E 5
   KERNEL_SIZE := 4096k
-  IMAGE_SIZE := 32768k
+  IMAGE_SIZE := 91136k
   IMAGES += factory.bin
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
   IMAGE/factory.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | \
@@ -1070,6 +1078,31 @@ define Device/totolink_a7000r
   DEVICE_PACKAGES := kmod-mt7615e kmod-mt7615-firmware
 endef
 TARGET_DEVICES += totolink_a7000r
+
+define Device/tplink_archer-a6-v3
+  $(Device/tplink-safeloader)
+  DEVICE_MODEL := Archer A6
+  DEVICE_VARIANT := V3
+  DEVICE_PACKAGES := kmod-mt7603 kmod-mt7615e \
+	kmod-mt7663-firmware-ap kmod-mt7663-firmware-sta
+  TPLINK_BOARD_ID := ARCHER-A6-V3
+  KERNEL := $(KERNEL_DTB) | uImage lzma
+  IMAGE_SIZE := 15744k
+endef
+TARGET_DEVICES += tplink_archer-a6-v3
+
+define Device/tplink_archer-c6u-v1
+  $(Device/tplink-safeloader)
+  DEVICE_MODEL := Archer C6U
+  DEVICE_VARIANT := v1
+  DEVICE_PACKAGES := kmod-mt7603 \
+	kmod-mt7615e kmod-mt7663-firmware-ap \
+	kmod-usb3 kmod-usb-ledtrig-usbport
+  KERNEL := $(KERNEL_DTB) | uImage lzma
+  TPLINK_BOARD_ID := ARCHER-C6U-V1
+  IMAGE_SIZE := 15744k
+endef
+TARGET_DEVICES += tplink_archer-c6u-v1
 
 define Device/tplink_eap235-wall-v1
   $(Device/tplink-safeloader)
