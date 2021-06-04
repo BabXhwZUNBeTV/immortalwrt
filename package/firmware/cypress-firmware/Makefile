@@ -10,13 +10,13 @@ include $(TOPDIR)/rules.mk
 UNPACK_CMD=unzip -q -p $(DL_DIR)/$(PKG_SOURCE) $(PKG_SOURCE_UNZIP) | gzip -dc | $(HOST_TAR) -C $(1) $(TAR_OPTIONS)
 
 PKG_NAME:=cypress-firmware
-PKG_VERSION:=v5.4.18-2021_0114
+PKG_VERSION:=v5.4.18-2021_0527
 PKG_RELEASE:=1
 
 PKG_SOURCE_UNZIP:=cypress-firmware-$(PKG_VERSION).tar.gz
 PKG_SOURCE:=cypress-fmac-$(PKG_VERSION).zip
-PKG_SOURCE_URL:=https://community.cypress.com/gfawx74859/attachments/gfawx74859/WiFiBluetoothLinux/1738/1/
-PKG_HASH:=a3e914ed8e3b2e5057cdd3c6ab09ff2771a745bd767ba7aada33efe872b57899
+PKG_SOURCE_URL:=https://community.cypress.com/gfawx74859/attachments/gfawx74859/WiFiBluetoothLinux/1911/2/
+PKG_HASH:=6dd1fe42791cb56fa4162d0a384cdca4052a428a259200afdc1eb2caa53543aa
 
 PKG_MAINTAINER:=Álvaro Fernández Rojas <noltari@gmail.com>
 
@@ -209,42 +209,6 @@ endef
 
 $(eval $(call BuildPackage,cypress-firmware-43570-pcie))
 
-# Cypress 4359 PCIe Firmware
-define Package/cypress-firmware-4359-pcie
-  $(Package/cypress-firmware-default)
-  TITLE:=CYW4359 FullMac PCIe firmware
-endef
-
-define Package/cypress-firmware-4359-pcie/install
-	$(INSTALL_DIR) $(1)/lib/firmware/brcm
-	$(INSTALL_DATA) \
-		$(PKG_BUILD_DIR)/firmware/cyfmac4359-pcie.bin \
-		$(1)/lib/firmware/brcm/brcmfmac4359-pcie.bin
-	$(INSTALL_DATA) \
-		$(PKG_BUILD_DIR)/firmware/cyfmac4359-pcie.clm_blob \
-		$(1)/lib/firmware/brcm/brcmfmac4359-pcie.clm_blob
-endef
-
-$(eval $(call BuildPackage,cypress-firmware-4359-pcie))
-
-# Cypress 4359 SDIO Firmware
-define Package/cypress-firmware-4359-sdio
-  $(Package/cypress-firmware-default)
-  TITLE:=CYW4359 FullMac SDIO firmware
-endef
-
-define Package/cypress-firmware-4359-sdio/install
-	$(INSTALL_DIR) $(1)/lib/firmware/brcm
-	$(INSTALL_DATA) \
-		$(PKG_BUILD_DIR)/firmware/cyfmac4359-sdio.bin \
-		$(1)/lib/firmware/brcm/brcmfmac4359-sdio.bin
-	$(INSTALL_DATA) \
-		$(PKG_BUILD_DIR)/firmware/cyfmac4359-sdio.clm_blob \
-		$(1)/lib/firmware/brcm/brcmfmac4359-sdio.clm_blob
-endef
-
-$(eval $(call BuildPackage,cypress-firmware-4359-sdio))
-
 # Cypress 4373 SDIO Firmware
 define Package/cypress-firmware-4373-sdio
   $(Package/cypress-firmware-default)
@@ -299,20 +263,3 @@ endef
 
 $(eval $(call BuildPackage,cypress-firmware-54591-pcie))
 
-# Cypress 89459 PCIe Firmware
-define Package/cypress-firmware-89459-pcie
-  $(Package/cypress-firmware-default)
-  TITLE:=CYW89459 FullMac PCIe firmware
-endef
-
-define Package/cypress-firmware-89459-pcie/install
-	$(INSTALL_DIR) $(1)/lib/firmware/brcm
-	$(INSTALL_DATA) \
-		$(PKG_BUILD_DIR)/firmware/cyfmac89459-pcie.bin \
-		$(1)/lib/firmware/brcm/brcmfmac89459-pcie.bin
-	$(INSTALL_DATA) \
-		$(PKG_BUILD_DIR)/firmware/cyfmac89459-pcie.clm_blob \
-		$(1)/lib/firmware/brcm/brcmfmac89459-pcie.clm_blob
-endef
-
-$(eval $(call BuildPackage,cypress-firmware-89459-pcie))
